@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context=".activity.MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <FrameLayout
+            android:id="@+id/black_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <RadioGroup
+            android:id="@+id/rg_tab"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:background="@drawable/bg_weibo_listab">
+
+            <RadioButton
+                style="@style/weibo_tab"
+                android:id="@+id/btn01"
+                android:drawableTop="@drawable/serlist_home_selector"
+                android:checked="true"
+                android:text="首页" />
+
+            <!--<RadioButton-->
+                <!--style="@style/weibo_tab"-->
+                <!--android:id="@+id/btn02"-->
+                <!--android:drawableTop="@drawable/weibolist_atme_selector"-->
+                <!--android:text="消息" />-->
+
+            <!--<RadioButton-->
+                <!--style="@style/weibo_tab"-->
+                <!--android:id="@+id/btn03"-->
+                <!--android:drawableTop="@drawable/weibolist_comment_selector"-->
+                <!--android:text="黑名单" />-->
+
+            <!--<RadioButton-->
+                <!--style="@style/weibo_tab"-->
+                <!--android:id="@+id/btn04"-->
+                <!--android:drawableTop="@drawable/serlist_timer_selector"-->
+                <!--android:text="任务" />-->
+
+            <RadioButton
+                style="@style/weibo_tab"
+                android:id="@+id/btn05"
+                android:drawableTop="@drawable/serlist_setting_selector"
+                android:text="设置"
+                android:checked="false" />
+        </RadioGroup>
+    </LinearLayout>
+
+</RelativeLayout>

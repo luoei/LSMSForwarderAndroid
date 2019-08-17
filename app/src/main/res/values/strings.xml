@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">短信转发</string>
+    <string name="action_settings">设置</string>
+    <string name="action_app_name">短信转发</string>
+    <string name="action_setting_back"> </string>
+
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="systeminfo">系统信息</string>
+
+    <string name="navigtion_go_back">返回</string>
+    <string name="setting">设置</string>
+    <string name="setting_save">保存</string>
+    <string name="moretoaddresses_add">增加</string>
+    <string name="title_baclname">黑名单</string>
+    <string name="setting_load_config">初始化数据</string>
+    <string name="setting_account_title">邮件账号设置</string>
+
+</resources>

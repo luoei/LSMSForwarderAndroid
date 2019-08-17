@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="dev.luoei.app.tool.sms.forward.activity.SettingAccountActivity"
+    android:id="@+id/activity_setting_account">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/setting_account_title"
+        android:id="@+id/titleText"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:background="#ffdcdcdc" />
+
+    <Button
+        android:id="@+id/setting_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="保  存" />
+
+    <Button
+        android:id="@+id/setting_navigtion_go_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/navigtion_go_back" />
+
+    <TextView
+        android:id="@+id/dslableusername"
+        android:gravity="right"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="80dp"
+        android:text="帐    号"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/dsusername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/dslableusername"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="-10dp"
+        android:layout_toEndOf="@+id/dslableusername"
+        android:layout_toRightOf="@+id/dslableusername"
+        android:ems="10"
+        android:hint="邮箱账号"
+        android:inputType="textEmailAddress"
+        android:maxLines="1" />
+
+    <TextView
+        android:gravity="right"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="密    码"
+        android:id="@+id/dslablepassword"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/dslableusername"
+        android:layout_alignRight="@+id/dslableusername"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/dspassword"
+        android:layout_alignBottom="@+id/dslablepassword"
+        android:layout_alignRight="@+id/dsusername"
+        android:layout_alignLeft="@+id/dsusername"
+        android:layout_marginBottom="-10dp"
+        android:inputType="textPassword"
+        android:hint="邮箱密码" />
+
+    <TextView
+        android:gravity="right"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="服务器"
+        android:id="@+id/dslabelserver"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/dslablepassword"
+        android:layout_alignRight="@id/dslablepassword" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/dsserver"
+        android:layout_alignBottom="@+id/dslabelserver"
+        android:layout_alignRight="@+id/dspassword"
+        android:layout_marginBottom="-10dp"
+        android:layout_alignLeft="@+id/dspassword"
+        android:inputType="text|textUri"
+        android:hint="SMTP邮箱服务器地址" />
+
+    <TextView
+        android:gravity="right"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="端    口"
+        android:id="@+id/dslabelport"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/dslabelserver"
+        android:layout_alignRight="@id/dslabelserver" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/dsserverport"
+        android:layout_alignBottom="@+id/dslabelport"
+        android:layout_alignLeft="@+id/dsserver"
+        android:layout_alignRight="@+id/dsserver"
+        android:layout_marginBottom="-10dp"
+        android:inputType="number"
+        android:hint="465" />
+
+    <TextView
+        android:gravity="right"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="收件人"
+        android:id="@+id/dslabelreceiver"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/dslabelport"
+        android:layout_alignRight="@+id/dslabelport" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/dsreceiver"
+        android:layout_alignBottom="@id/dslabelreceiver"
+        android:layout_alignLeft="@id/dsserverport"
+        android:layout_alignRight="@id/dsserverport"
+        android:hint="短信收件箱地址"
+        android:layout_marginBottom="-10dp" />
+
+    <TextView
+        android:gravity="right"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="手机号"
+        android:id="@+id/dslabelphone"
+        android:layout_below="@+id/dslabelreceiver"
+        android:layout_alignRight="@+id/dslabelreceiver"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/dsphone"
+        android:inputType="phone"
+        android:layout_alignBottom="@+id/dslabelphone"
+        android:layout_alignLeft="@+id/dsreceiver"
+        android:layout_alignRight="@+id/dsreceiver"
+        android:hint="邮件无法使用时，会短信到这个号码"
+        android:layout_marginBottom="-10dp" />
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dslabelphone"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="连接测试" />
+
+
+</RelativeLayout>
