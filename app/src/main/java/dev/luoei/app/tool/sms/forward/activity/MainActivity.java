@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private void requestPermissions(){
         boolean mShowRequestPermission = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            String[] permissions = new String[]{Manifest.permission.SEND_SMS,Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_PHONE_NUMBERS,Manifest.permission.ACCESS_NETWORK_STATE,Manifest.permission.CHANGE_NETWORK_STATE,Manifest.permission.RECEIVE_BOOT_COMPLETED,Manifest.permission.FOREGROUND_SERVICE};
+            String[] permissions = new String[]{Manifest.permission.SEND_SMS,Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_PHONE_NUMBERS,Manifest.permission.ACCESS_NETWORK_STATE,Manifest.permission.CHANGE_NETWORK_STATE,Manifest.permission.RECEIVE_BOOT_COMPLETED,Manifest.permission.FOREGROUND_SERVICE,Manifest.permission.READ_EXTERNAL_STORAGE};
             List<String> mPermissionList = new ArrayList<>();
             for (int i = 0; i < permissions.length; i++) {
                 if (ContextCompat.checkSelfPermission(CommonParas.getMainContext(), permissions[i]) != PackageManager.PERMISSION_GRANTED) {

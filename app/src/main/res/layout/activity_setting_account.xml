@@ -190,5 +190,14 @@
         android:layout_centerHorizontal="true"
         android:text="连接测试" />
 
+    <Button
+        android:id="@+id/loadConfigButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dslabelphone"
+        android:layout_toRightOf="@id/connectButton"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="31dp"
+        android:text="加载配置" />
 
 </RelativeLayout>

@@ -52,4 +52,5 @@ dependencies {
     implementation files('libs/mail.jar')
     implementation 'com.alibaba:fastjson:1.1.71.android'
     implementation 'com.android.support:recyclerview-v7:28.+'
+    implementation("com.squareup.okhttp3:okhttp:4.2.0")
 }
