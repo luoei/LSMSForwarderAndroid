@@ -26,12 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import dev.luoei.app.tool.router.controller.MailController;
+import dev.luoei.app.tool.router.entity.MailAccount;
 import dev.luoei.app.tool.sms.forward.R;
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
-import dev.luoei.app.tool.sms.forward.dao.MailAccountDao;
-import dev.luoei.app.tool.sms.forward.dao.impl.MailAccountDaoImpl;
-import dev.luoei.app.tool.sms.forward.entity.MailAccount;
-import dev.luoei.app.tool.sms.forward.tools.mail.MailController;
+import dev.luoei.app.tool.router.dao.MailAccountDao;
+import dev.luoei.app.tool.router.dao.impl.MailAccountDaoImpl;
+
 
 import static android.view.View.INVISIBLE;
 
@@ -41,23 +42,27 @@ public class SettingAccountActivity extends AppCompatActivity {
     boolean isActivityFinishedGoBack = true;
     View  view;
     private EditText addresses;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_account);
         view = findViewById(R.id.activity_setting_account);
+        context = this;
 
         initAction();
         initViewData();
+
     }
 
     public void initViewData(){
         if (null != getIntent().getExtras() && getIntent().getExtras().containsKey("isActivityFinishedGoBack")){
             isActivityFinishedGoBack = getIntent().getExtras().getBoolean("isActivityFinishedGoBack");
         }
-        MailAccount mailAccount = CommonParas.getMailAccount();
-        if(null != CommonParas.getMailAccount()){
+        MailAccountDao mailAccountDao = new MailAccountDaoImpl(this);
+        MailAccount mailAccount = mailAccountDao.getFromCache();
+        if(null != mailAccount){
             ((EditText)view.findViewById(R.id.dsusername)).setText(mailAccount.getUsername());
             ((EditText)view.findViewById(R.id.dspassword)).setText(mailAccount.getPassword());
             ((EditText)view.findViewById(R.id.dsserver)).setText(mailAccount.getStmpServerUrl());
@@ -188,10 +193,10 @@ public class SettingAccountActivity extends AppCompatActivity {
             if(null == port || port.length() == 0){
                 port = "465";
             }
-            MailAccount mailAccount = CommonParas.getMailAccount();
+            MailAccountDao mailAccountDao = new MailAccountDaoImpl(CommonParas.getMainContext());
+            MailAccount mailAccount = mailAccountDao.getFromCache();
             if(null == mailAccount){
                 mailAccount = new MailAccount();
-                CommonParas.setMailAccount(mailAccount);
             }
 
             mailAccount.setUsername(username);
@@ -203,7 +208,6 @@ public class SettingAccountActivity extends AppCompatActivity {
             mailAccount.setSender(mailAccount.getUsername());
             mailAccount.setTimeout("60");
 
-            MailAccountDao mailAccountDao = new MailAccountDaoImpl();
             mailAccountDao.save(mailAccount);
 
             if (!isActivityFinishedGoBack){

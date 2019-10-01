@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import java.util.HashMap;
 import java.util.Map;
 
-import dev.luoei.app.tool.sms.forward.entity.MailAccount;
 
 /**
  * Created by usb on 15-1-15.
@@ -20,7 +19,6 @@ public class CommonParas {
 
     private static Context mainContext=null;
     // 邮件账号
-    private static MailAccount mailAccount = null;
 
     public static long lastsendtime=0;
 
@@ -34,16 +32,5 @@ public class CommonParas {
     public static void setMainContext(Context mainContext) {
         CommonParas.mainContext = mainContext;
     }
-
-    public static MailAccount getMailAccount() {
-        return mailAccount;
-    }
-
-    public static void setMailAccount(MailAccount mailAccount) {
-        CommonParas.mailAccount = mailAccount;
-    }
-
-
-
 
 }

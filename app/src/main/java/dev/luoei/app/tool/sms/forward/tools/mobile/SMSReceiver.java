@@ -17,16 +17,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import dev.luoei.app.tool.router.controller.SenderContrller;
+import dev.luoei.app.tool.router.controller.SenderContrllerStatus;
 import dev.luoei.app.tool.sms.forward.activity.BlackListActivity;
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
 import dev.luoei.app.tool.sms.forward.common.CommonVariables;
 import dev.luoei.app.tool.sms.forward.common.InitGlobalVar;
-import dev.luoei.app.tool.sms.forward.dao.SMSDao;
-import dev.luoei.app.tool.sms.forward.dao.impl.SMSDaoImpl;
-import dev.luoei.app.tool.sms.forward.entity.SMS;
+import dev.luoei.app.tool.sms.dao.SMSDao;
+import dev.luoei.app.tool.sms.dao.impl.SMSDaoImpl;
+import dev.luoei.app.tool.sms.entity.SMS;
 import dev.luoei.app.tool.sms.forward.tools.BasicTools;
 import dev.luoei.app.tool.sms.forward.tools.MessageTool;
-import dev.luoei.app.tool.sms.forward.tools.mail.SenderContrller;
 
 
 /**
@@ -84,7 +85,7 @@ public class SMSReceiver extends BroadcastReceiver {
                 //更新界面 UI
                  new MessageTool().sendMessage(MessageTool.MAIN_VIEW, new String[]{"收到信息-"+map.get("WHO"),"初始化发送通道"}, CommonVariables.UPDATE_MAINVIEW_NOTICE);
                 //更新到本地
-                SMSDao smsDao =new SMSDaoImpl();
+                SMSDao smsDao =new SMSDaoImpl(context);
                 SMS sms =new SMS();
                 sms.setDataPhone(map.get("WHO"));
                 sms.setDataMsg(map.get("MSG"));
@@ -136,15 +137,8 @@ public class SMSReceiver extends BroadcastReceiver {
             new Thread(runnable).start();
         }
 
-
     }
 
-
-//    public   void newtorkTest(ConnectivityManager connectivityManager){
-//        Log.d("Network Test -->","网络测试...");
-//        this.connectivityManager=connectivityManager;
-//        new Thread(runnable).start();
-//    }
 
      Handler handler = new Handler(){
         @Override
@@ -159,7 +153,12 @@ public class SMSReceiver extends BroadcastReceiver {
     Runnable runnable = new Runnable(){
         @Override
         public void run() {
-            new SenderContrller().sender(data_id,titles == "" ? "未知" : titles, senderContent,context);
+            new SenderContrller().sender(data_id, titles == "" ? "未知" : titles, senderContent, context, new SenderContrllerStatus() {
+                @Override
+                public void onChanged(String key, int status, String message) {
+
+                }
+            });
         }
     };
 

@@ -1,11 +1,10 @@
 package dev.luoei.app.tool.sms.forward.controller;
 
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
-import dev.luoei.app.tool.sms.forward.dao.MailAccountDao;
-import dev.luoei.app.tool.sms.forward.dao.SMSDao;
-import dev.luoei.app.tool.sms.forward.dao.impl.MailAccountDaoImpl;
-import dev.luoei.app.tool.sms.forward.dao.impl.SMSDaoImpl;
-import dev.luoei.app.tool.sms.forward.entity.MailAccount;
+import dev.luoei.app.tool.router.dao.MailAccountDao;
+import dev.luoei.app.tool.sms.dao.SMSDao;
+import dev.luoei.app.tool.router.dao.impl.MailAccountDaoImpl;
+import dev.luoei.app.tool.sms.dao.impl.SMSDaoImpl;
 
 
 /**
@@ -19,15 +18,11 @@ public class InitializeController {
 
     public void start(){
         /// 数据库初始化
-        SMSDao smsDao = new SMSDaoImpl();
+        SMSDao smsDao = new SMSDaoImpl(CommonParas.getMainContext());
         smsDao.create();
-        MailAccountDao mailAccountDao = new MailAccountDaoImpl();
+        MailAccountDao mailAccountDao = new MailAccountDaoImpl(CommonParas.getMainContext());
         mailAccountDao.create();
-        /// 初始化数据获取
-        MailAccount mailAccount = mailAccountDao.getFromCache();
-        if(null != mailAccount){
-            CommonParas.setMailAccount(mailAccount);
-        }
+
     }
 
 

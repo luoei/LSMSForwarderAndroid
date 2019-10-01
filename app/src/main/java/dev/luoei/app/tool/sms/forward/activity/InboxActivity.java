@@ -13,9 +13,9 @@ import java.util.List;
 
 import dev.luoei.app.tool.sms.forward.R;
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
-import dev.luoei.app.tool.sms.forward.dao.SMSDao;
-import dev.luoei.app.tool.sms.forward.dao.impl.SMSDaoImpl;
-import dev.luoei.app.tool.sms.forward.entity.SMS;
+import dev.luoei.app.tool.sms.dao.SMSDao;
+import dev.luoei.app.tool.sms.dao.impl.SMSDaoImpl;
+import dev.luoei.app.tool.sms.entity.SMS;
 
 /**
  * Created by admin on 13-11-23.
@@ -37,7 +37,7 @@ public class InboxActivity extends AppCompatActivity {
 
         //生成动态数组，并且转载数据
         ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
-        SMSDao smsDao =new SMSDaoImpl();
+        SMSDao smsDao =new SMSDaoImpl(this);
         List<SMS> list= smsDao.queryAllData();
         if (null != list && list.size() > 0){
             for(SMS sms : list) {

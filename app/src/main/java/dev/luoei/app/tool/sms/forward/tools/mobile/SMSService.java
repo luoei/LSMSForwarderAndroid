@@ -11,90 +11,49 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import dev.luoei.app.tool.sms.dao.SMSDao;
+import dev.luoei.app.tool.sms.dao.impl.SMSDaoImpl;
+import dev.luoei.app.tool.sms.entity.SMS;
 import dev.luoei.app.tool.sms.forward.common.CommonVariables;
-import dev.luoei.app.tool.sms.forward.dao.SMSDao;
-import dev.luoei.app.tool.sms.forward.dao.impl.SMSDaoImpl;
-import dev.luoei.app.tool.sms.forward.entity.SMS;
 import dev.luoei.app.tool.sms.forward.tools.BasicTools;
+import dev.luoei.app.tool.sms.tool.SmsRead;
 
 /**
  * Created by usb on 15-1-9.
  */
 public class SMSService {
 
-    public void sender(Context context,String address,String msg){
-//        String SENT_SMS_ACTION="com.paad.smssnippets.SENT_SMS_ACTION";
-//        String DELIVERED_SMS_ACTION="com.paad.smssnippets.DELIVERED_SMS_ACTION";
-//        context= CommonParas.getMainContext();
-//        //create sentIntent parameter
-//        Intent sentIntent=new Intent(SENT_SMS_ACTION);
-//        PendingIntent sendPI=PendingIntent.getBroadcast(context.getApplicationContext(),0,sentIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-//        //create deliveryIntent parameter
-//        Intent deliveryIntent=new Intent(DELIVERED_SMS_ACTION);
-//        PendingIntent deliveryPI=PendingIntent.getBroadcast(context.getApplicationContext(),0,deliveryIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-//        //reg Broadcast Receiver
-//        context.registerReceiver(new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//
-//                String resultText = "UNKNOWN";
-//                switch (getResultCode()) {
-//                    case Activity.RESULT_OK:
-//                        Log.d("SMSManager -->", "发送成功");
-//                        resultText = "Send successful";
-//                        break;
-//                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-//                        resultText = "Send failded";
-//                        break;
-//                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-//                        resultText = "Send failded:Radio is off";
-//                        break;
-//                    case SmsManager.RESULT_ERROR_NULL_PDU:
-//                        resultText = "Send failded:No PUD specified";
-//                        break;
-//                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-//                        resultText = "Send failded:No service";
-//                        break;
-//                }
-//                Toast.makeText(context, resultText, Toast.LENGTH_LONG).show();
-//            }
-//        }, new IntentFilter(SENT_SMS_ACTION));
-//
-//        context.registerReceiver(new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//                Toast.makeText(context,"SMS Delivered",Toast.LENGTH_LONG).show();
-//            }
-//        },new IntentFilter(DELIVERED_SMS_ACTION));
+    private Context context;
 
+    public SMSService(Context context){
+        this.context = context;
+    }
 
+    public void sender(String address,String msg){
         SmsManager smsManager=SmsManager.getDefault();
-//        String sendTo="10001";
-//        String msg="102";
-
-//        ArrayList<String> msgArray=smsManager.divideMessage(msg);
-//        ArrayList<PendingIntent> sentIntents=new ArrayList<PendingIntent>();
-//        for(int i=0,len=msgArray.size();i<len;i++){
-//            sentIntents.add(sendPI);
-//        }
-//        smsManager.sendTextMessage(sendTo,null,msg,sendPI,deliveryPI);
-//        smsManager.sendMultipartTextMessage(address,null,msgArray,sentIntents,null);
         smsManager.sendTextMessage(address,null,msg,null,null);
         Log.d("SMS -->","信息已发，收件人:"+address+" 内容为：\r\n"+msg);
 
     }
 
     public void loadLocalSms(){
-        new LoadLocalSmsTask().execute();
+        new LoadLocalSmsTask(this.context).execute();
     }
 
     private class LoadLocalSmsTask extends AsyncTask {
+
+        private Context context;
+
+        public LoadLocalSmsTask(Context context){
+            this.context = context;
+        }
+
         @Override
         protected Object doInBackground(Object[] objects) {
             //获取本地短信
-            List<Map<String,String>> list=new SmsRead().getSmsFromPhone();
+            List<Map<String,String>> list=new SmsRead().getSmsFromPhone(this.context);
             if(null == list || list.size() == 0)return null;
-            SMSDao smsDao =new SMSDaoImpl();
+            SMSDao smsDao =new SMSDaoImpl(context);
             List<SMS> smses = new ArrayList<>();
             Set<String> dataids = new HashSet<>();
             Set localDataIds = smsDao.getAllDataId();

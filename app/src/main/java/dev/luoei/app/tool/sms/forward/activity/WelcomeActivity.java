@@ -1,24 +1,22 @@
 package dev.luoei.app.tool.sms.forward.activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import dev.luoei.app.tool.router.dao.MailAccountDao;
+import dev.luoei.app.tool.router.dao.impl.MailAccountDaoImpl;
+import dev.luoei.app.tool.router.entity.MailAccount;
 import dev.luoei.app.tool.sms.forward.R;
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
 import dev.luoei.app.tool.sms.forward.controller.InitializeController;
-import dev.luoei.app.tool.sms.forward.entity.MailAccount;
+import dev.luoei.app.tool.sms.forward.tools.ProcessUtil;
+import dev.luoei.app.tool.sms.forward.tools.ServiceUtil;
 
 public class WelcomeActivity extends AppCompatActivity {
+
+    private final static String TAG = "WelcomeActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,24 +24,26 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         initData();
+
+        Log.d(TAG,"启动....."+ProcessUtil.isMainProcess());
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
+    private void initData(){
+        CommonParas.setMainContext(this.getApplication());
         initEvents();
     }
-
-    private void initData(){ CommonParas.setMainContext(this.getApplication()); }
 
     private void initEvents(){
         /// 初始化
         new InitializeController();
         Intent intent = null;
-        MailAccount mailAccount = CommonParas.getMailAccount();
+        MailAccountDao mailAccountDao = new MailAccountDaoImpl(CommonParas.getMainContext());
+        MailAccount mailAccount = mailAccountDao.getFromCache();
         if (null != mailAccount && mailAccount.getUsername() != null && mailAccount.getUsername().length() > 0){
             intent = new Intent(this, MainActivity.class);
+
+            //启动服务进程
+            ServiceUtil.start(CommonParas.getMainContext());
         }else {
             intent = new Intent(this,SettingAccountActivity.class);
             intent.putExtra("isActivityFinishedGoBack",false);
@@ -51,6 +51,7 @@ public class WelcomeActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         this.overridePendingTransition(0,0);
+
     }
 
 

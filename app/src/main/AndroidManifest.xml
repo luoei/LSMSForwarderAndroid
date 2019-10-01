@@ -42,11 +42,6 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".tools.mobile.SMSReceiver">
-            <intent-filter android:priority="1000">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-        </receiver>
         <receiver android:name=".tools.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
@@ -54,16 +49,16 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".tools.mobile.SMSReceiverService" />
-        <service
-            android:name=".tools.AlarmService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="TIMER_ACTION" />
-            </intent-filter>
-        </service>
+        <!-- 进程通信 - 更新UI -->
+        <service android:name=".service.MessengerService"/>
 
+
+        <!-- 保活进程 -->
+        <service android:name="dev.luoei.app.tool.sms.service.DemonsSmsObserverService" android:process=":sms"/>
+        <service android:name="dev.luoei.app.tool.router.service.DemonsRouterService" android:process=":router"/>
+        <service android:name=".tools.DemonsService" android:process=":demons"/>
+        <service android:name=".tools.DemonsSubdemonService" android:process=":demons1"/>
+        
         <provider android:name="android.support.v4.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:grantUriPermissions="true" android:exported="false">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" /> </provider>
 

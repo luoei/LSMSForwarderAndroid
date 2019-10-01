@@ -10,6 +10,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -26,12 +27,12 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,8 @@ import dev.luoei.app.tool.sms.forward.common.CommonParas;
 import dev.luoei.app.tool.sms.forward.tools.DownloadUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -145,23 +148,58 @@ public class SettingFragment extends Fragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    OkHttpClient client = new OkHttpClient();
 
-                    Request request = new Request.Builder()
-                            .url(URI_UPDATE_API)
-                            .build();
 
                     try {
                         String version = null;
                         String downloadUrl = null;
                         String message = null;
-                        Response response = client.newCall(request).execute();
+                        Response response = null;
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH){
+                            List<CipherSuite> cipherSuites = ConnectionSpec.MODERN_TLS.cipherSuites();
+                            if (!cipherSuites.contains(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA)) {
+                                cipherSuites = new ArrayList(cipherSuites);
+                                cipherSuites.add(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA);
+                            }
+                            final ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                                    .cipherSuites(cipherSuites.toArray(new CipherSuite[0]))
+                                    .build();
+
+                            OkHttpClient client = new OkHttpClient.Builder()
+                                    .connectionSpecs(Collections.singletonList(spec))
+                                    .build();
+                            Request request = new Request.Builder()
+                                    .url(URI_UPDATE_API)
+                                    .build();
+                            try {
+                                response = client.newCall(request).execute();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                mHandlerT.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(CommonParas.getMainContext(),"请升级系统到Android5以上",Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+
+                        }else {
+                            OkHttpClient client = new OkHttpClient();
+
+                            Request request = new Request.Builder()
+                                    .url(URI_UPDATE_API)
+                                    .build();
+                            response = client.newCall(request).execute();
+                        }
+                        if(null == response)return;
                         String result = response.body().string();
                         if (null != result){
                             Map data = JSON.parseObject(result,Map.class);
                             if (null != data){
                                 version = String.valueOf(data.get("tag_name"));
                                 message = String.valueOf(data.get("name"));
+                                String body = String.valueOf(data.get("body"));
+                                message = message +" \n"+body;
                                 Object assets = data.get("assets");
                                 if (null != assets){
                                     List assetsList = (List)assets;

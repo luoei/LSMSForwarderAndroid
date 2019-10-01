@@ -21,6 +21,8 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
             //context.startActivity(intent);
             //3.如果自启动服务
             context.startService(intent1);
+
+            ServiceUtil.start(context);
         }
     }
 }

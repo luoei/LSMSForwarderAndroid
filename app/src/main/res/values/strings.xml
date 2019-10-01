@@ -17,5 +17,7 @@
     <string name="title_baclname">黑名单</string>
     <string name="setting_load_config">初始化数据</string>
     <string name="setting_account_title">邮件账号设置</string>
+    <string name="title_sms">sms</string>
+    <string name="title_db">db</string>
 
 </resources>

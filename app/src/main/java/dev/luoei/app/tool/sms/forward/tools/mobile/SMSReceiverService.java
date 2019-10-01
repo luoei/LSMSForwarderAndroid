@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import dev.luoei.app.tool.sms.forward.activity.MainActivity;
+import dev.luoei.app.tool.sms.tool.SmsContentObserver;
 
 /**
  * Created by Luoei on 2017/5/4.
@@ -28,7 +29,7 @@ public class SMSReceiverService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        SmsContentObserver sms=new SmsContentObserver(this,MainActivity.mHandler);
+        SmsContentObserver sms=new SmsContentObserver(this, MainActivity.mHandler);
 
         this.getContentResolver().registerContentObserver(Uri.parse("content://sms/"),true,sms);
     }

@@ -20,14 +20,16 @@ import android.widget.RadioGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.luoei.app.tool.router.tool.UIClientMessengerUtil;
 import dev.luoei.app.tool.sms.forward.R;
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
 import dev.luoei.app.tool.sms.forward.common.CommonVariables;
 import dev.luoei.app.tool.sms.forward.controller.TabbarController;
+import dev.luoei.app.tool.sms.forward.service.MessengerService;
 import dev.luoei.app.tool.sms.forward.tools.BasicTools;
 import dev.luoei.app.tool.sms.forward.tools.NotificationUtil;
+import dev.luoei.app.tool.sms.forward.tools.ProcessUtil;
 import dev.luoei.app.tool.sms.forward.tools.ScheduleUtil;
-import dev.luoei.app.tool.sms.forward.tools.mobile.SMSReceiverService;
 import dev.luoei.app.tool.sms.forward.tools.mobile.SMSService;
 
 
@@ -47,10 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         initDockView();
         initGlobalConfig();
-
-        //监听短信接受
-        Intent intent=new Intent(this, SMSReceiverService.class);
-        startService(intent);
 
         // 黑名单配置
         BasicTools basicTools = new BasicTools();
@@ -104,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSmsService(){
-        new SMSService().loadLocalSms();
+        new SMSService(this).loadLocalSms();
         ScheduleUtil.smsCheckinSchedule();
     }
 
@@ -113,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
         CommonParas.sharedPreferences=getSharedPreferences(CommonVariables.CONFIG_SETTING, Activity.MODE_PRIVATE);
         // 显示本地通知
         new NotificationUtil().showLocalNotification();
+
+        Intent messengerService = new Intent(this, MessengerService.class);
+        startService(messengerService);
+
+        UIClientMessengerUtil.uimessengerService = MessengerService.class;
+
+        System.out.println("当前进程："+ ProcessUtil.getProcessName());
     }
 
     private void initDockView() {
