@@ -7,8 +7,8 @@ android {
         applicationId "dev.luoei.app.tool.sms.forward"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 11
-        versionName "3.3.0"
+        versionCode 12
+        versionName "3.4.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {

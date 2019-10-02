@@ -27,4 +27,7 @@ public class Define {
     public static final int SMS_SEND_FINISHED_CODE=99;
     public static final String SMS_SEND_FINISHED_MSG="发送完成";
 
+
+    public static final String CONFIG_BLACK_SETTING="CONFIG_BLACK_SETTING";
+
 }
