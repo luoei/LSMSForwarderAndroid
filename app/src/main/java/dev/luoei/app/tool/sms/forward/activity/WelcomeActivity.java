@@ -24,8 +24,6 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         initData();
-
-        Log.d(TAG,"启动....."+ProcessUtil.isMainProcess());
     }
 
     private void initData(){

@@ -45,28 +45,23 @@ public class DemonsRouterService extends Service {
                     final Message replyMessage = Message.obtain(null, MSG_FROM_SERVICE);
                     final Bundle bundle = new Bundle();
 
-                    new Thread(new TimerTask() {
+                    new SenderContrller().sender(dataId, title, content, context, new SenderContrllerStatus() {
                         @Override
-                        public void run() {
-                            new SenderContrller().sender(dataId, title, content, context, new SenderContrllerStatus() {
-                                @Override
-                                public void onChanged(String key, int status, String message) {
-                                    if (bundle.containsKey("key")) bundle.remove("key");
-                                    if (bundle.containsKey("status")) bundle.remove("status");
-                                    if (bundle.containsKey("message")) bundle.remove("message");
-                                    bundle.putString("key", key);
-                                    bundle.putInt("status",status);
-                                    bundle.putString("message", message);
-                                    replyMessage.setData(bundle);
-                                    try {
-                                        serviceMessenger.send(replyMessage);
-                                    } catch (RemoteException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
+                        public void onChanged(String key, int status, String message) {
+                            if (bundle.containsKey("key")) bundle.remove("key");
+                            if (bundle.containsKey("status")) bundle.remove("status");
+                            if (bundle.containsKey("message")) bundle.remove("message");
+                            bundle.putString("key", key);
+                            bundle.putInt("status",status);
+                            bundle.putString("message", message);
+                            replyMessage.setData(bundle);
+                            try {
+                                serviceMessenger.send(replyMessage);
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }).start();
+                    });
 
                     break;
             }

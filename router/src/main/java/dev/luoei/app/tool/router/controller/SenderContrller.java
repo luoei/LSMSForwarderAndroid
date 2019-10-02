@@ -1,13 +1,8 @@
 package dev.luoei.app.tool.router.controller;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimerTask;
 
 import dev.luoei.app.tool.router.dao.MailAccountDao;
 import dev.luoei.app.tool.router.dao.impl.MailAccountDaoImpl;
@@ -15,7 +10,7 @@ import dev.luoei.app.tool.router.define.Define;
 import dev.luoei.app.tool.router.entity.MailAccount;
 import dev.luoei.app.tool.router.entity.MailSenderInfo;
 import dev.luoei.app.tool.router.tool.NetWorkUtils;
-import dev.luoei.app.tool.router.tool.SMSService;
+import dev.luoei.app.tool.router.tool.SMSUtil;
 import dev.luoei.app.tool.router.tool.UIClientMessengerUtil;
 
 /**
@@ -26,6 +21,8 @@ public class SenderContrller {
     private final static String TAG = "SenderContrller";
 
     private Context context;
+
+    private UIClientMessengerUtil uiClientMessengerUtil;
 
     //网络检测
     public  boolean networkTimeOutCheck(){
@@ -41,6 +38,8 @@ public class SenderContrller {
      */
     public  void sender(String key,String title,String content,Context context,SenderContrllerStatus status){
         this.context=context;
+
+        uiClientMessengerUtil = new UIClientMessengerUtil(context);
 
         /// 初始化数据获取
         MailAccountDao mailAccountDao = new MailAccountDaoImpl(context);
@@ -70,7 +69,7 @@ public class SenderContrller {
                 e.printStackTrace();
                 sendMessage("EMAIL网络发送失败,将通过SMS 通道发送，失败原因:"+e.getMessage());
                 try{
-                    new SMSService(context).sender(mailAccount.getPhone(),content);
+                    new SMSUtil(context).sender(mailAccount.getPhone(),content);
                     sendMessage("SMS-发送完成");
                     status.onChanged(key, Define.SMS_SEND_SUCCESS_SMS_CODE, Define.SMS_SEND_SUCCESS_SMS_MSG);
                 }catch (Exception ex){
@@ -84,7 +83,7 @@ public class SenderContrller {
             Log.d(TAG,"信息发送,网络超时验证不通过，将通过短信发送...");
             sendMessage("验证未通过，通过SMS网络发送消息");
             try{
-                new SMSService(context).sender(mailAccount.getPhone(),content);
+                new SMSUtil(context).sender(mailAccount.getPhone(),content);
                 sendMessage("SMS-发送完成");
                 status.onChanged(key, Define.SMS_SEND_SUCCESS_SMS_CODE, Define.SMS_SEND_SUCCESS_SMS_MSG);
             }catch (Exception e){
@@ -94,23 +93,13 @@ public class SenderContrller {
         }
 
         status.onChanged(key, Define.SMS_SEND_FINISHED_CODE, Define.SMS_SEND_FINISHED_MSG);
+        sendMessage(UIClientMessengerUtil.FINISHED_TAG);
     }
 
     public void sendMessage(final String message){
 
-        new Thread(new TimerTask() {
-            @Override
-            public void run() {
-                // Messenger 进行通信
-
-                if (null == UIClientMessengerUtil.uimessengerService)return;
-                UIClientMessengerUtil uiClientMessengerUtil = new UIClientMessengerUtil(context);
-                uiClientMessengerUtil.content = message;
-                Intent intent = new Intent(context, UIClientMessengerUtil.uimessengerService);
-                context.startService(intent);
-                context.bindService(intent, uiClientMessengerUtil.messengerServiceConnection, Context.BIND_NOT_FOREGROUND);
-            }
-        }).start();
+        // 发送
+        uiClientMessengerUtil.send(message);
     }
 
 

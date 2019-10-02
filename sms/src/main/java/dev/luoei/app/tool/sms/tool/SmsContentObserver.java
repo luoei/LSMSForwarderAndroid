@@ -85,11 +85,18 @@ public class SmsContentObserver extends ContentObserver {
                 data.put("dataId",sms.getDataId());
                 data.put("title",title);
                 data.put("content",content);
-                ClientMessengerUtil clientMessengerUtil = new ClientMessengerUtil(context,data);
-                Intent intent = new Intent(context, DemonsRouterService.class);
-                context.startService(intent);
-                context.bindService(intent, clientMessengerUtil.messengerServiceConnection, Context.BIND_NOT_FOREGROUND);
-                Log.d(TAG,"发送短信");
+
+                try {
+                    ClientMessengerUtil clientMessengerUtil = new ClientMessengerUtil(context,data);
+                    Intent intent = new Intent(context, DemonsRouterService.class);
+                    context.startService(intent);
+                    context.bindService(intent, clientMessengerUtil.messengerServiceConnection, Context.BIND_NOT_FOREGROUND);
+                    Log.d(TAG,"发送短信");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
             }
         }
         smsDao.adds(smses);

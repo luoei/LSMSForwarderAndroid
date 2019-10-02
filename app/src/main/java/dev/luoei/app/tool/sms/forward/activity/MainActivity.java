@@ -110,12 +110,10 @@ public class MainActivity extends AppCompatActivity {
         CommonParas.setMainContext(MainActivity.this);
         CommonParas.sharedPreferences=getSharedPreferences(CommonVariables.CONFIG_SETTING, Activity.MODE_PRIVATE);
         // 显示本地通知
-        new NotificationUtil().showLocalNotification();
+//        new NotificationUtil().showLocalNotification();
 
         Intent messengerService = new Intent(this, MessengerService.class);
         startService(messengerService);
-
-        UIClientMessengerUtil.uimessengerService = MessengerService.class;
 
         System.out.println("当前进程："+ ProcessUtil.getProcessName());
     }

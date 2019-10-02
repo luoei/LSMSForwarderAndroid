@@ -7,11 +7,11 @@ import android.util.Log;
 /**
  * Created by usb on 15-1-9.
  */
-public class SMSService {
+public class SMSUtil {
 
     private Context context;
 
-    public SMSService(Context context){
+    public SMSUtil(Context context){
         this.context = context;
     }
 

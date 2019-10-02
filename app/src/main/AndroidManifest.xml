@@ -49,9 +49,7 @@
             </intent-filter>
         </receiver>
 
-        <!-- 进程通信 - 更新UI -->
         <service android:name=".service.MessengerService"/>
-
 
         <!-- 保活进程 -->
         <service android:name="dev.luoei.app.tool.sms.service.DemonsSmsObserverService" android:process=":sms"/>

@@ -14,7 +14,7 @@ import dev.luoei.app.tool.router.dao.impl.MailAccountDaoImpl;
 import dev.luoei.app.tool.router.entity.MailAccount;
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
 import dev.luoei.app.tool.sms.forward.common.CommonVariables;
-import dev.luoei.app.tool.router.tool.SMSService;
+import dev.luoei.app.tool.router.tool.SMSUtil;
 
 import static dev.luoei.app.tool.sms.forward.common.CommonVariables.CONFIG_BACKGROUND_SETTING_SMS_CHECKIN;
 import static dev.luoei.app.tool.sms.forward.common.CommonVariables.CONFIG_BACKGROUND_SETTING_SMS_PREVIOUS_SENDER_TIME;
@@ -39,7 +39,7 @@ public class ScheduleUtil {
                         SharedPreferences.Editor editor= sharedPreferences.edit();
                         editor.putLong(CONFIG_BACKGROUND_SETTING_SMS_PREVIOUS_SENDER_TIME,System.currentTimeMillis());
                         editor.commit();
-                        new SMSService(CommonParas.getMainContext()).sender( mailAccount.getPhone(),"短信签到，时间："+new Date());
+                        new SMSUtil(CommonParas.getMainContext()).sender( mailAccount.getPhone(),"短信签到，时间："+new Date());
                         Log.d("定时器","当前时间"+new Date()+" 短信发送成功");
                     }
                 }

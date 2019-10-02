@@ -30,6 +30,8 @@ public class ClientMessengerUtil {
 
     private Map data;
 
+    private Messenger clientMessenger;
+
     public ClientMessengerUtil(){
 
     }
@@ -39,11 +41,10 @@ public class ClientMessengerUtil {
         this.data = data;
     }
 
-    private Messenger clientMessenger;
     public ServiceConnection messengerServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.v(TAG,"服务端【"+name+" - "+MSG_FROM_SERVICE+"】连接成功");
+            Log.v(TAG,"服务端【"+name.getClassName()+" - "+MSG_FROM_SERVICE+"】连接成功");
 
             //1、发送消息给服务端
             clientMessenger = new Messenger(service);
@@ -61,13 +62,13 @@ public class ClientMessengerUtil {
                 e.printStackTrace();
             }
 
-            Log.v(TAG,"服务端【"+name+" - "+MSG_FROM_SERVICE+"】发送完成");
+            Log.v(TAG,"服务端【"+name.getClassName()+" - "+MSG_FROM_SERVICE+"】发送完成");
 
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
 
-            Log.v(TAG,"服务端【"+name+" - "+MSG_FROM_SERVICE+"】断开连接");
+            Log.v(TAG,"服务端【"+name.getClassName()+" - "+MSG_FROM_SERVICE+"】断开连接");
 
         }
     };
@@ -88,6 +89,7 @@ public class ClientMessengerUtil {
                     if (status == Define.SMS_SEND_FINISHED_CODE){
                         Intent intent = new Intent(context, DemonsRouterService.class);
                         context.stopService(intent);
+                        context.unbindService(messengerServiceConnection);
                         return;
                     }
 

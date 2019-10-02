@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.util.Date;
 import java.util.Properties;
+import java.util.TimerTask;
 
 import javax.mail.Address;
 import javax.mail.BodyPart;
@@ -69,7 +70,7 @@ public class MailController {
      * 以文本格式发送邮件
      * @param mailInfo 待发送的邮件的信息
      */
-    public boolean sendTextMail(MailSenderInfo mailInfo) throws Exception {
+    public boolean sendTextMail(final MailSenderInfo mailInfo) throws Exception {
         try {
             Log.v(TAG,"邮件【"+mailInfo.getToAddress()+" - "+mailInfo.getContent()+"】发送中...");
             // 判断是否需要身份认证
@@ -83,7 +84,7 @@ public class MailController {
             Session sendMailSession = Session.getInstance(pro,authenticator);
 
             // 根据session创建一个邮件消息
-            Message mailMessage = new MimeMessage(sendMailSession);
+            final Message mailMessage = new MimeMessage(sendMailSession);
             // 创建邮件发送者地址
             Address from = new InternetAddress(mailInfo.getFromAddress());
             // 设置邮件消息的发送者
@@ -104,9 +105,18 @@ public class MailController {
                     +TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:dd")+"\n";
             mailMessage.setText(mailContent);
 
-            // 发送邮件
-            Transport.send(mailMessage);
-            Log.v(TAG,"邮件【"+mailInfo.getToAddress()+"】发送完成");
+            new Thread(new TimerTask() {
+                @Override
+                public void run() {
+                    // 发送邮件
+                    try {
+                        Transport.send(mailMessage);
+                        Log.v(TAG,"邮件【"+mailInfo.getToAddress()+"】发送完成");
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
 
             return true;
         } catch (MessagingException ex) {
