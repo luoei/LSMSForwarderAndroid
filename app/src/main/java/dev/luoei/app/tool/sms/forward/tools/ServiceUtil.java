@@ -3,6 +3,7 @@ package dev.luoei.app.tool.sms.forward.tools;
 import android.content.Context;
 import android.content.Intent;
 
+import dev.luoei.app.tool.demons.DemonsService;
 import dev.luoei.app.tool.router.service.DemonsRouterService;
 import dev.luoei.app.tool.sms.service.DemonsSmsObserverService;
 
@@ -22,22 +23,22 @@ public class ServiceUtil {
         context.startService(demonsIntent);
     }
 
-    /// 子保活进程
-    public static void startDemonSubdemon(Context context){
-        Intent demonsSubdemonIntent=new Intent(context, DemonsSubdemonService.class);
-        context.startService(demonsSubdemonIntent);
-    }
-
-    /// 短信监听
-    public static void startSmsObserverDemon(Context context){
-        Intent smsObserverIntent=new Intent(context, DemonsSmsObserverService.class);
-        context.startService(smsObserverIntent);
-    }
-
-    /// 短信转发
-    public static void startRouterDemon(Context context){
-        Intent routerIntent=new Intent(context, DemonsRouterService.class);
-        context.startService(routerIntent);
-    }
+//    /// 子保活进程
+//    public static void startDemonSubdemon(Context context){
+//        Intent demonsSubdemonIntent=new Intent(context, DemonsSubdemonService.class);
+//        context.startService(demonsSubdemonIntent);
+//    }
+//
+//    /// 短信监听
+//    public static void startSmsObserverDemon(Context context){
+//        Intent smsObserverIntent=new Intent(context, DemonsSmsObserverService.class);
+//        context.startService(smsObserverIntent);
+//    }
+//
+//    /// 短信转发
+//    public static void startRouterDemon(Context context){
+//        Intent routerIntent=new Intent(context, DemonsRouterService.class);
+//        context.startService(routerIntent);
+//    }
 
 }

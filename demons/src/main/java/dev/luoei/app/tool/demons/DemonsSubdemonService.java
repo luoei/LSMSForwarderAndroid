@@ -1,4 +1,4 @@
-package dev.luoei.app.tool.sms.forward.tools;
+package dev.luoei.app.tool.demons;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -11,7 +11,7 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import dev.luoei.app.tool.sms.forward.entity.Process;
+import dev.luoei.app.tool.demons.entity.Process;
 
 /*
 * 守护子进程，只查看守护进程
@@ -24,7 +24,7 @@ public class DemonsSubdemonService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        DemonsSubdemonService self = this;
+        final DemonsSubdemonService self = this;
 
         new Thread(new Runnable() {
             @Override

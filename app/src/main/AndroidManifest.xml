@@ -56,8 +56,8 @@
         <!-- 保活进程 -->
         <service android:name="dev.luoei.app.tool.sms.service.DemonsSmsObserverService" android:process=":sms"/>
         <service android:name="dev.luoei.app.tool.router.service.DemonsRouterService" android:process=":router"/>
-        <service android:name=".tools.DemonsService" android:process=":demons"/>
-        <service android:name=".tools.DemonsSubdemonService" android:process=":demons1"/>
+        <service android:name="dev.luoei.app.tool.demons.DemonsService" android:process=":demons"/>
+        <service android:name="dev.luoei.app.tool.demons.DemonsSubdemonService" android:process=":demons1"/>
         
         <provider android:name="android.support.v4.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:grantUriPermissions="true" android:exported="false">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" /> </provider>
