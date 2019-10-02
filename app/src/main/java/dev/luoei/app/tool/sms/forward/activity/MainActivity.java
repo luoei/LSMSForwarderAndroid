@@ -30,7 +30,7 @@ import dev.luoei.app.tool.sms.forward.tools.BasicTools;
 import dev.luoei.app.tool.sms.forward.tools.NotificationUtil;
 import dev.luoei.app.tool.sms.forward.tools.ProcessUtil;
 import dev.luoei.app.tool.sms.forward.tools.ScheduleUtil;
-import dev.luoei.app.tool.sms.forward.tools.mobile.SMSService;
+import dev.luoei.app.tool.sms.tool.SMSUtil;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSmsService(){
-        new SMSService(this).loadLocalSms();
+        new SMSUtil(this).loadLocalSms();
         ScheduleUtil.smsCheckinSchedule();
     }
 

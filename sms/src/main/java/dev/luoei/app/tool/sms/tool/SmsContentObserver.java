@@ -79,7 +79,6 @@ public class SmsContentObserver extends ContentObserver {
                     title=title.substring(0,50);
                 }
                 String content="发件人："+ sms.getDataPhone()+"  接受时间："+ sms.getReceiveDate()+"\r\n"+ sms.getDataMsg();
-//                new SenderContrller().sender(sms.getDataId(),title, content, context);
 
                 // Messenger 进行通信
                 Map data = new HashMap();

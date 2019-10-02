@@ -1,4 +1,4 @@
-package dev.luoei.app.tool.sms.forward.tools.mobile;
+package dev.luoei.app.tool.sms.tool;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -13,27 +13,18 @@ import java.util.Set;
 
 import dev.luoei.app.tool.sms.dao.SMSDao;
 import dev.luoei.app.tool.sms.dao.impl.SMSDaoImpl;
+import dev.luoei.app.tool.sms.define.Define;
 import dev.luoei.app.tool.sms.entity.SMS;
-import dev.luoei.app.tool.sms.forward.common.CommonVariables;
-import dev.luoei.app.tool.sms.forward.tools.BasicTools;
-import dev.luoei.app.tool.sms.tool.SmsRead;
 
 /**
  * Created by usb on 15-1-9.
  */
-public class SMSService {
+public class SMSUtil {
 
     private Context context;
 
-    public SMSService(Context context){
+    public SMSUtil(Context context){
         this.context = context;
-    }
-
-    public void sender(String address,String msg){
-        SmsManager smsManager=SmsManager.getDefault();
-        smsManager.sendTextMessage(address,null,msg,null,null);
-        Log.d("SMS -->","信息已发，收件人:"+address+" 内容为：\r\n"+msg);
-
     }
 
     public void loadLocalSms(){
@@ -61,14 +52,14 @@ public class SMSService {
                 dataids.addAll(localDataIds);
             }
             for(int i=0,len=list.size();i<len;i++){
-                String body=(list.get(i)).get(CommonVariables.SMS_BODY);
+                String body=(list.get(i)).get(Define.SMS_BODY);
                 SMS sms =new SMS();
-                sms.setDataPhone((list.get(i)).get(CommonVariables.SMS_PHONE));
+                sms.setDataPhone((list.get(i)).get(Define.SMS_PHONE));
                 sms.setDataMsg(body);
-                sms.setDataStatus(CommonVariables.SMS_SEND_HISTORY_CODE);
-                sms.setDataStatusName(CommonVariables.SMS_SEND_HISTORY_MSG);
-                sms.setReceiveDate((list.get(i)).get(CommonVariables.SMS_SEND_DATE));
-                sms.setLastupdatetime(new BasicTools().getCurrentTime("yyyyMMddHHmmdd"));
+                sms.setDataStatus(Define.SMS_SEND_HISTORY_CODE);
+                sms.setDataStatusName(Define.SMS_SEND_HISTORY_MSG);
+                sms.setReceiveDate((list.get(i)).get(Define.SMS_SEND_DATE));
+                sms.setLastupdatetime(TimeUtil.getCurrentTime("yyyyMMddHHmmdd"));
                 sms.setDesc("");
                 sms.setDataId(sms.generateDataId());
                 String dataId = sms.getDataId();
