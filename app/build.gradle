@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
     defaultConfig {
         applicationId "dev.luoei.app.tool.sms.forward"
-        minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 12
-        versionName "3.4.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -54,12 +55,15 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:28.+'
+    implementation "com.android.support:appcompat-v7:${V7_APPCOMPAT_VERSION}"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     implementation 'com.alibaba:fastjson:1.1.71.android'
-    implementation 'com.android.support:recyclerview-v7:28.+'
+    implementation "com.android.support:recyclerview-v7:${V7_APPCOMPAT_VERSION}"
     implementation("com.squareup.okhttp3:okhttp:3.12.+")
+    implementation 'com.orhanobut:logger:2.2.0'
     implementation project(path: ':db')
+    implementation project(path: ':sms')
+    implementation project(path: ':router')
     implementation project(path: ':demons')
 }

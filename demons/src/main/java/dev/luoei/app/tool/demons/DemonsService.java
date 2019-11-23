@@ -11,6 +11,8 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 import dev.luoei.app.tool.demons.entity.Process;
 
 
@@ -18,6 +20,12 @@ public class DemonsService extends Service {
 
     private final String TAG = "Demons";
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        LogService.initLogger();
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -32,27 +40,26 @@ public class DemonsService extends Service {
                     public void run() {
                         if(ProcessUtil.isAliveProcess(Process.DEMON_SUBDEMON.toString(),self)){
                             Log.v(TAG,Process.DEMON_SUBDEMON.toString()+" is running!");
+                            Logger.v("守护模块|进程检测|"+Process.DEMON_SUBDEMON.toString()+" is running!");
                         }else {
                             Log.v(TAG,Process.DEMON_SUBDEMON.toString()+" not running, and start...");
+                            Logger.v("守护模块|进程检测|"+Process.DEMON_SUBDEMON.toString()+" not running, and start...");
                             ServiceUtil.startDemonSubdemon(self);
                             Log.v(TAG,Process.DEMON_SUBDEMON.toString()+" start finished!");
+                            Logger.v("守护模块|进程检测|"+Process.DEMON_SUBDEMON.toString()+" start finished!");
                         }
 
                         if(ProcessUtil.isAliveProcess(Process.SMSOBSERVER.toString(),self)){
                             Log.v(TAG,Process.SMSOBSERVER.toString()+" is running!");
+                            Logger.v("守护模块|进程检测|"+Process.SMSOBSERVER.toString()+" is running!");
                         }else {
                             Log.v(TAG,Process.SMSOBSERVER.toString()+" not running, and start...");
+                            Logger.v("守护模块|进程检测|"+Process.SMSOBSERVER.toString()+" not running, and start...");
                             ServiceUtil.startSmsObserverDemon(self);
                             Log.v(TAG,Process.SMSOBSERVER.toString()+" start finished!");
+                            Logger.v("守护模块|进程检测|"+Process.SMSOBSERVER.toString()+" start finished!");
                         }
 
-                        if(ProcessUtil.isAliveProcess(Process.ROUTER.toString(),self)){
-                            Log.v(TAG,Process.ROUTER.toString()+" is running!");
-                        }else {
-                            Log.v(TAG,Process.ROUTER.toString()+" not running, and start...");
-                            ServiceUtil.startRouterDemon(self);
-                            Log.v(TAG,Process.ROUTER.toString()+" start finished!");
-                        }
                     }
                 }).start();
             }

@@ -11,6 +11,7 @@ import dev.luoei.app.tool.router.entity.MailAccount;
 import dev.luoei.app.tool.sms.forward.R;
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
 import dev.luoei.app.tool.sms.forward.controller.InitializeController;
+import dev.luoei.app.tool.sms.forward.service.LogService;
 import dev.luoei.app.tool.sms.forward.tools.ProcessUtil;
 import dev.luoei.app.tool.sms.forward.tools.ServiceUtil;
 
@@ -27,6 +28,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void initData(){
+        LogService.initLogger();
         CommonParas.setMainContext(this.getApplication());
         initEvents();
     }

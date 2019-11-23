@@ -2,7 +2,6 @@ package dev.luoei.app.tool.sms.forward.tools;
 
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -37,9 +36,9 @@ public class NotificationUtil {
 
 
     public void showLocalNotification() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            showNotificationAction();
-        else
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+//            showNotificationAction();
+//        else
             showNotificationActionPrevious();
 
     }
@@ -86,17 +85,17 @@ public class NotificationUtil {
 
         String NOTIFICATION_CHANNEL_ID = "sms_forward_v2_channel";
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(CommonParas.getMainContext(),NOTIFICATION_CHANNEL_ID)
-                        .setSmallIcon(R.drawable.app_icon)
-                        .setContentTitle("短信转发")
-                        .setContentText("请不要删除此通知")
-                        .setContentIntent(contentIntent);
-
-        //构建通知
-        Notification notification = mBuilder.build();
-        //显示通知
-        mNotifyMgr.notify(0, notification);
+//        NotificationCompat.Builder mBuilder =
+//                new NotificationCompat.Builder(CommonParas.getMainContext(),NOTIFICATION_CHANNEL_ID)
+//                        .setSmallIcon(R.drawable.app_icon)
+//                        .setContentTitle("短信转发")
+//                        .setContentText("请不要删除此通知")
+//                        .setContentIntent(contentIntent);
+//
+//        //构建通知
+//        Notification notification = mBuilder.build();
+//        //显示通知
+//        mNotifyMgr.notify(0, notification);
         //启动为前台服务
 //        startForeground(0, notification);
 
@@ -189,46 +188,46 @@ public class NotificationUtil {
         PendingIntent pi = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //版本兼容
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){//兼容Android8.0
-            String id ="my_channel_01";
-            int importance =NotificationManager.IMPORTANCE_LOW;
-            CharSequence name = "notice";
-            NotificationChannel mChannel =new NotificationChannel(id, name,importance);
-            mChannel.enableLights(true);
-            mChannel.setDescription("just show notice");
-            mChannel.enableLights(true);
-            mChannel.setLightColor(Color.GREEN);
-            mChannel.enableVibration(true);
-            mChannel.setVibrationPattern(new long[]{100,200,300,400,500,400,300,200,400});
-            mNotifyMgr.createNotificationChannel(mChannel);
-
-            Notification.Builder builder = new Notification.Builder(context,id);
-            builder.setAutoCancel(true)
-                    .setContentIntent(pi)
-                    .setContentTitle(obj.title)
-                    .setContentText(obj.content)
-                    .setOngoing(false)
-                    .setSmallIcon(R.drawable.app_icon)
-                    .setWhen(System.currentTimeMillis());
-            if(obj.subText != null && obj.subText.trim().length() > 0){
-                builder.setSubText(obj.subText);
-            }
-            notification =  builder.build();
-        }else if (Build.VERSION.SDK_INT >= 23) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-            builder.setContentTitle(obj.title)
-                    .setContentText(contentText)
-                    .setSmallIcon(R.drawable.app_icon)
-                    .setContentIntent(pi)
-                    .setAutoCancel(true)
-                    .setOngoing(false)
-                    .setWhen(System.currentTimeMillis());
-            if(obj.subText != null && obj.subText.trim().length() > 0){
-                builder.setSubText(obj.subText);
-            }
-            notification = builder.build();
-        } else if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&
-                Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){//兼容Android8.0
+//            String id ="my_channel_01";
+//            int importance =NotificationManager.IMPORTANCE_LOW;
+//            CharSequence name = "notice";
+//            NotificationChannel mChannel =new NotificationChannel(id, name,importance);
+//            mChannel.enableLights(true);
+//            mChannel.setDescription("just show notice");
+//            mChannel.enableLights(true);
+//            mChannel.setLightColor(Color.GREEN);
+//            mChannel.enableVibration(true);
+//            mChannel.setVibrationPattern(new long[]{100,200,300,400,500,400,300,200,400});
+//            mNotifyMgr.createNotificationChannel(mChannel);
+//
+//            Notification.Builder builder = new Notification.Builder(context,id);
+//            builder.setAutoCancel(true)
+//                    .setContentIntent(pi)
+//                    .setContentTitle(obj.title)
+//                    .setContentText(obj.content)
+//                    .setOngoing(false)
+//                    .setSmallIcon(R.drawable.app_icon)
+//                    .setWhen(System.currentTimeMillis());
+//            if(obj.subText != null && obj.subText.trim().length() > 0){
+//                builder.setSubText(obj.subText);
+//            }
+//            notification =  builder.build();
+//        }else if (Build.VERSION.SDK_INT >= 23) {
+//            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+//            builder.setContentTitle(obj.title)
+//                    .setContentText(contentText)
+//                    .setSmallIcon(R.drawable.app_icon)
+//                    .setContentIntent(pi)
+//                    .setAutoCancel(true)
+//                    .setOngoing(false)
+//                    .setWhen(System.currentTimeMillis());
+//            if(obj.subText != null && obj.subText.trim().length() > 0){
+//                builder.setSubText(obj.subText);
+//            }
+//            notification = builder.build();
+//        } else if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN &&
+//                Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
             Notification.Builder builder = new Notification.Builder(context);
             builder.setAutoCancel(true)
                     .setContentIntent(pi)
@@ -238,10 +237,10 @@ public class NotificationUtil {
                     .setSmallIcon(R.drawable.app_icon)
                     .setWhen(System.currentTimeMillis());
             if(obj.subText != null && obj.subText.trim().length() > 0){
-                builder.setSubText(obj.subText);
+//                builder.setSubText(obj.subText);
             }
-            notification =  builder.build();
-        }
+//            notification =  builder.build();
+//        }
         if(notification != null){
             mNotifyMgr.notify(nid, notification);
 

@@ -1,1 +1,1 @@
-include ':app', ':sms', ':db', ':router', ':demons'
+include ':app', ':sms', ':db', ':router', ':demons', ':LibMarsdaemon'

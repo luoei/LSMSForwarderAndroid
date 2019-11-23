@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import dev.luoei.app.tool.demons.DemonsService;
-import dev.luoei.app.tool.router.service.DemonsRouterService;
-import dev.luoei.app.tool.sms.service.DemonsSmsObserverService;
+
 
 public class ServiceUtil {
 
@@ -31,7 +30,7 @@ public class ServiceUtil {
 //
 //    /// 短信监听
 //    public static void startSmsObserverDemon(Context context){
-//        Intent smsObserverIntent=new Intent(context, DemonsSmsObserverService.class);
+//        Intent smsObserverIntent=new Intent(context, SmsObserverService.class);
 //        context.startService(smsObserverIntent);
 //    }
 //

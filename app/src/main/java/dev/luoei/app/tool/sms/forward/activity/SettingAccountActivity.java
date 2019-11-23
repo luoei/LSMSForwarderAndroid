@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -71,9 +73,10 @@ public class SettingAccountActivity extends AppCompatActivity {
             ((EditText)view.findViewById(R.id.dsreceiver)).setText(mailAccount.getReceiver());
         }
 
-        Button loadConfigButton = view.findViewById(R.id.loadConfigButton);
+
+        Button loadConfigButton = (Button) view.findViewById(R.id.loadConfigButton);
         if (!isActivityFinishedGoBack){
-            Button gobackButton = view.findViewById(R.id.setting_navigtion_go_back);
+            Button gobackButton = (Button) view.findViewById(R.id.setting_navigtion_go_back);
             gobackButton.setVisibility(INVISIBLE);
             loadConfigButton.setVisibility(View.VISIBLE);
         }else {
@@ -85,7 +88,7 @@ public class SettingAccountActivity extends AppCompatActivity {
 
     private void initAction(){
 
-        Button navGoBackButton = view.findViewById(R.id.setting_navigtion_go_back);
+        Button navGoBackButton = (Button)view.findViewById(R.id.setting_navigtion_go_back);
         navGoBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,13 +96,13 @@ public class SettingAccountActivity extends AppCompatActivity {
             }
         });
 
-        Button save = view.findViewById(R.id.setting_save);
+        Button save = (Button)view.findViewById(R.id.setting_save);
         save.setOnClickListener(new DoneOnClickListener());
 
-        Button connectButton = findViewById(R.id.connectButton);
+        Button connectButton = (Button) findViewById(R.id.connectButton);
         connectButton.setOnClickListener(new ConnectOnClickListener());
 
-        Button loadConfigButton = findViewById(R.id.loadConfigButton);
+        Button loadConfigButton = (Button)findViewById(R.id.loadConfigButton);
         loadConfigButton.setOnClickListener(new LoadConfigOnClickListener());
     }
 
@@ -107,12 +110,59 @@ public class SettingAccountActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Button connectButton = findViewById(R.id.connectButton);
+            Button connectButton = (Button) findViewById(R.id.connectButton);
             connectButton.setText("连接中……");
             connectButton.setEnabled(false);
-            new ConnectButtonTask().execute();
+            String username = ((EditText)view.findViewById(R.id.dsusername)).getText().toString();
+            if (null ==  username || username.length() == 0)return;
+            String password = ((EditText)view.findViewById(R.id.dspassword)).getText().toString();
+            String serverUrl = ((EditText)view.findViewById(R.id.dsserver)).getText().toString();
+            String port = ((EditText)view.findViewById(R.id.dsserverport)).getText().toString();
+            if(null == port || port.length() == 0){
+                port = "465";
+            }
+            new ConnectButtonTask().execute(username, password, serverUrl, port);
         }
     }
+
+    private Handler cnnectButtonHandle = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            if(msg.what == 100) {
+                if (msg.obj.equals("1")){
+                    Toast.makeText(CommonParas.getMainContext(), "连接成功", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(CommonParas.getMainContext(), "账号或密码错误", Toast.LENGTH_SHORT).show();
+                }
+                Button connectButton = (Button) findViewById(R.id.connectButton);
+                connectButton.setText("连接测试");
+                connectButton.setEnabled(true);
+            }
+
+            return false;
+        }
+    });
+
+    private class ConnectButtonTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            MailController mailController = new MailController();
+            boolean success = mailController.login(strings[0],strings[1],strings[2],strings[3]);
+            return success ? "1" : "0";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Message message = new Message();
+            message.what = 100;
+            message.obj = s;
+            cnnectButtonHandle.sendMessage(message);
+        }
+    }
+
+
 
     class LoadConfigOnClickListener implements View.OnClickListener {
 
@@ -141,36 +191,6 @@ public class SettingAccountActivity extends AppCompatActivity {
 //                Toast.makeText(CommonParas.getMainContext(),"加载失败，"+e.getMessage(),Toast.LENGTH_SHORT).show();
             }
 
-        }
-    }
-
-    private class ConnectButtonTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String username = ((EditText)view.findViewById(R.id.dsusername)).getText().toString();
-            if (null ==  username || username.length() == 0)return null;
-            String password = ((EditText)view.findViewById(R.id.dspassword)).getText().toString();
-            String serverUrl = ((EditText)view.findViewById(R.id.dsserver)).getText().toString();
-            String port = ((EditText)view.findViewById(R.id.dsserverport)).getText().toString();
-            if(null == port || port.length() == 0){
-                port = "465";
-            }
-            MailController mailController = new MailController();
-            boolean success = mailController.login(username,password,serverUrl,port);
-            return success ? "1" : "0";
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            if (s.equals("1")){
-                Toast.makeText(CommonParas.getMainContext(), "连接成功", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(CommonParas.getMainContext(), "账号或密码错误", Toast.LENGTH_SHORT).show();
-            }
-            Button connectButton = findViewById(R.id.connectButton);
-            connectButton.setText("连接测试");
-            connectButton.setEnabled(true);
         }
     }
 
@@ -222,7 +242,7 @@ public class SettingAccountActivity extends AppCompatActivity {
     private void requestPermissions(){
         boolean mShowRequestPermission = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            String[] permissions = new String[]{Manifest.permission.SEND_SMS,Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_PHONE_NUMBERS,Manifest.permission.ACCESS_NETWORK_STATE,Manifest.permission.CHANGE_NETWORK_STATE,Manifest.permission.RECEIVE_BOOT_COMPLETED,Manifest.permission.FOREGROUND_SERVICE,Manifest.permission.READ_EXTERNAL_STORAGE};
+            String[] permissions = new String[]{Manifest.permission.SEND_SMS,Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_NETWORK_STATE,Manifest.permission.CHANGE_NETWORK_STATE,Manifest.permission.RECEIVE_BOOT_COMPLETED,Manifest.permission.READ_EXTERNAL_STORAGE};
 //            String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
             List<String> mPermissionList = new ArrayList<>();
             for (int i = 0; i < permissions.length; i++) {

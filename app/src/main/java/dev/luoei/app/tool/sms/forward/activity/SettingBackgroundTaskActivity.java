@@ -37,7 +37,7 @@ public class SettingBackgroundTaskActivity extends AppCompatActivity {
 
         final SettingBackgroundTaskActivity self = this;
 
-        Button backButton = findViewById(R.id.title_back_button);
+        Button backButton = (Button) findViewById(R.id.title_back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +45,7 @@ public class SettingBackgroundTaskActivity extends AppCompatActivity {
             }
         });
 
-        smsSwitch = findViewById(R.id.setting_sms_checkin_switch);
+        smsSwitch = (Switch) findViewById(R.id.setting_sms_checkin_switch);
         smsSwitch.setChecked(selected);
         smsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

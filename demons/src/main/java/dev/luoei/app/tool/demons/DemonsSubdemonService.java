@@ -11,6 +11,8 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 import dev.luoei.app.tool.demons.entity.Process;
 
 /*
@@ -20,6 +22,12 @@ public class DemonsSubdemonService extends Service {
 
     private final String TAG = "DemonsSubdemon";
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        LogService.initLogger();
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -31,10 +39,13 @@ public class DemonsSubdemonService extends Service {
             public void run() {
                 if(ProcessUtil.isAliveProcess(Process.DEMON.toString(),self)){
                     Log.v(TAG,Process.DEMON.toString()+" is running!");
+                    Logger.v("守护模块|进程检测|"+Process.DEMON.toString()+" is running!");
                 }else {
                     Log.v(TAG,Process.DEMON.toString()+" not running, and start...");
+                    Logger.v("守护模块|进程检测|"+Process.DEMON.toString()+" not running, and start...");
                     ServiceUtil.startDemon(self);
                     Log.v(TAG,Process.DEMON.toString()+" start finished!");
+                    Logger.v("守护模块|进程检测|"+Process.DEMON.toString()+" start finished!");
                 }
             }
         }).start();

@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.util.Log;
+
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,11 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import dev.luoei.app.tool.router.service.DemonsRouterService;
+import dev.luoei.app.tool.router.controller.SenderContrller;
+import dev.luoei.app.tool.router.controller.SenderContrllerStatus;
+
 import dev.luoei.app.tool.sms.dao.SMSDao;
 import dev.luoei.app.tool.sms.dao.impl.SMSDaoImpl;
 import dev.luoei.app.tool.sms.define.Define;
 import dev.luoei.app.tool.sms.entity.SMS;
+import dev.luoei.app.tool.sms.service.LogService;
 
 
 /**
@@ -32,6 +38,9 @@ public class SmsContentObserver extends ContentObserver {
 
     private Context context;
 
+    // 发送中
+    private boolean sendering = false;
+
     public SmsContentObserver(Context context, Handler handle){
        super(handle);
 
@@ -40,12 +49,20 @@ public class SmsContentObserver extends ContentObserver {
 
     @Override
     public void onChange(boolean selfChange) {
+        LogService.initLogger();
+
         Log.d(TAG,"内容变化");
+        Logger.d("短信模块|短信服务|短信变化");
 
         start1();
     }
 
     protected void start1() {
+        if (sendering){
+            Logger.d("短信模块|短信服务|有短信正在发送中，本次无效");
+            return;
+        }
+        sendering = true;
         //获取本地短信
         List<Map<String,String>> list=new SmsRead().getSmsFromPhone(this.context);
         if(null == list || list.size() == 0)return;
@@ -73,7 +90,8 @@ public class SmsContentObserver extends ContentObserver {
                 smses.add(sms);
             }
         }
-        Log.d(TAG,"待发送短信条数："+smses.size());
+//        Log.d(TAG,"待发送短信条数："+smses.size());
+        Logger.d("短信模块|短信服务| 待发送短信条数："+ smses.size());
         if(smses.size() > 0){
             for (SMS sms : smses){
                 String title=String.valueOf(sms.getDataMsg());
@@ -111,27 +129,30 @@ public class SmsContentObserver extends ContentObserver {
                 }
 
                 String content="发件人："+ sms.getDataPhone()+"  接受时间："+ sms.getReceiveDate()+"\r\n"+ sms.getDataMsg();
-
-                // Messenger 进行通信
-                Map data = new HashMap();
-                data.put("dataId",sms.getDataId());
-                data.put("title",title);
-                data.put("content",content);
-
+                Logger.d("短信模块|短信服务|短信|开始发送|"+content);
+                // Messenger 发送
                 try {
-                    ClientMessengerUtil clientMessengerUtil = new ClientMessengerUtil(context,data);
-                    Intent intent = new Intent(context, DemonsRouterService.class);
-                    context.startService(intent);
-                    context.bindService(intent, clientMessengerUtil.messengerServiceConnection, Context.BIND_NOT_FOREGROUND);
-                    Log.d(TAG,"发送短信");
+
+                    new SenderContrller().sender(sms.getDataId(), title, content, context, new SenderContrllerStatus() {
+                        @Override
+                        public void onChanged(String key, int status, String message) {
+
+                        }
+                    });
+
+
+//                    Log.d(TAG,"发送短信");
+                    Logger.d("短信模块|短信服务|短信|发送完成");
                 }catch (Exception e){
                     e.printStackTrace();
+                    Logger.e("短信模块|短信服务|短信|发送失败|"+e.getMessage());
                 }
 
 
             }
         }
         smsDao.adds(smses);
+        sendering = false;
     }
 
 }

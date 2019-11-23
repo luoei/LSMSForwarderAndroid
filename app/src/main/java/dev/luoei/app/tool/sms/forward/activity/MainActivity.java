@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,17 +21,17 @@ import android.widget.RadioGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import dev.luoei.app.tool.router.tool.UIClientMessengerUtil;
 import dev.luoei.app.tool.sms.forward.R;
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
 import dev.luoei.app.tool.sms.forward.common.CommonVariables;
 import dev.luoei.app.tool.sms.forward.controller.TabbarController;
-import dev.luoei.app.tool.sms.forward.service.MessengerService;
 import dev.luoei.app.tool.sms.forward.tools.BasicTools;
-import dev.luoei.app.tool.sms.forward.tools.NotificationUtil;
 import dev.luoei.app.tool.sms.forward.tools.ProcessUtil;
 import dev.luoei.app.tool.sms.forward.tools.ScheduleUtil;
+import dev.luoei.app.tool.sms.service.SmsObserverService;
+import dev.luoei.app.tool.sms.service.SmsObserverService2;
 import dev.luoei.app.tool.sms.tool.SMSUtil;
+import dev.luoei.app.tool.sms.tool.SmsContentObserver;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private void requestPermissions(){
         boolean mShowRequestPermission = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            String[] permissions = new String[]{Manifest.permission.SEND_SMS,Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_PHONE_NUMBERS,Manifest.permission.ACCESS_NETWORK_STATE,Manifest.permission.CHANGE_NETWORK_STATE,Manifest.permission.RECEIVE_BOOT_COMPLETED,Manifest.permission.FOREGROUND_SERVICE,Manifest.permission.READ_EXTERNAL_STORAGE};
+            String[] permissions = new String[]{Manifest.permission.SEND_SMS,Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_NETWORK_STATE,Manifest.permission.CHANGE_NETWORK_STATE,Manifest.permission.RECEIVE_BOOT_COMPLETED,Manifest.permission.READ_EXTERNAL_STORAGE};
             List<String> mPermissionList = new ArrayList<>();
             for (int i = 0; i < permissions.length; i++) {
                 if (ContextCompat.checkSelfPermission(CommonParas.getMainContext(), permissions[i]) != PackageManager.PERMISSION_GRANTED) {
@@ -112,8 +113,10 @@ public class MainActivity extends AppCompatActivity {
         // 显示本地通知
 //        new NotificationUtil().showLocalNotification();
 
-        Intent messengerService = new Intent(this, MessengerService.class);
-        startService(messengerService);
+//        Intent messengerService = new Intent(this, MessengerService.class);
+//        startService(messengerService);
+
+//        startService(new Intent(MainActivity.this, SmsObserverService.class));
 
         System.out.println("当前进程："+ ProcessUtil.getProcessName());
     }

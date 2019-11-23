@@ -86,7 +86,7 @@ public class SettingFragment extends Fragment {
     }
 
     private void initViewLayout(){
-        RecyclerView recyclerView = view.findViewById(R.id.setting_home_list);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.setting_home_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(CommonParas.getMainContext()));
         recyclerView.setAdapter(new ListAdapter());
     }
@@ -107,7 +107,7 @@ public class SettingFragment extends Fragment {
             public MyViewHolder(View view)
             {
                 super(view);
-                title =  view.findViewById(R.id.setting_home_list_item_title);
+                title = (TextView)  view.findViewById(R.id.setting_home_list_item_title);
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
