@@ -75,32 +75,37 @@ public class UIClientMessengerUtil {
     };
 
     private void connect(){
-        if (null == UIClientMessengerUtil.UI_MESSENGER_SERVICE){
-            Log.v(TAG,"UI 进程通信失败，请先注册实体类");
-            return;
-        }
-        Log.v(TAG,"UI 进程通信发现实体类，连接中...");
-
-        try {
-            //Messenger 进行通信
-            Intent intent = new Intent(context, UIClientMessengerUtil.UI_MESSENGER_SERVICE);
-            context.startService(intent);
-            context.bindService(intent, messengerServiceConnection, Context.BIND_NOT_FOREGROUND);
-        }catch (Exception e){
-            e.printStackTrace();
-            disconnect();
-        }
+//        if (null == UIClientMessengerUtil.UI_MESSENGER_SERVICE){
+//            Log.v(TAG,"UI 进程通信失败，请先注册实体类");
+//            return;
+//        }
+//        Log.v(TAG,"UI 进程通信发现实体类，连接中...");
+//
+//        try {
+//            //Messenger 进行通信
+//            Intent intent = new Intent(context, UIClientMessengerUtil.UI_MESSENGER_SERVICE);
+//            context.startService(intent);
+//            context.bindService(intent, messengerServiceConnection, Context.BIND_NOT_FOREGROUND);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            disconnect();
+//        }
     }
 
     private void disconnect(){
-        Intent intent = new Intent(context, UI_MESSENGER_SERVICE);
-        context.stopService(intent);
-        context.unbindService(messengerServiceConnection);
+//        Intent intent = new Intent(context, UI_MESSENGER_SERVICE);
+//        context.stopService(intent);
+//        context.unbindService(messengerServiceConnection);
     }
 
     public void send(String content){
-        senders.add(content);
-        send();
+        try {
+            senders.add(content);
+            send();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     private void send(){

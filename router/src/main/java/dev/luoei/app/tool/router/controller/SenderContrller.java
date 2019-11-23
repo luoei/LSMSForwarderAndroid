@@ -99,7 +99,7 @@ public class SenderContrller {
     public void sendMessage(final String message){
 
         // 发送
-        uiClientMessengerUtil.send(message);
+//        uiClientMessengerUtil.send(message);
     }
 
 
