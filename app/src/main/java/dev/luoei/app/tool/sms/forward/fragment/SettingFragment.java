@@ -3,7 +3,6 @@ package dev.luoei.app.tool.sms.forward.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -14,10 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +20,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.alibaba.fastjson.JSON;
 
-import org.json.JSONObject;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,11 +37,9 @@ import dev.luoei.app.tool.sms.forward.R;
 import dev.luoei.app.tool.sms.forward.activity.BlackListActivity;
 import dev.luoei.app.tool.sms.forward.activity.InboxActivity;
 import dev.luoei.app.tool.sms.forward.activity.SettingAccountActivity;
-import dev.luoei.app.tool.sms.forward.activity.SettingBackgroundTaskActivity;
+import dev.luoei.app.tool.sms.forward.activity.SettingOtherActivity;
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
 import dev.luoei.app.tool.sms.forward.tools.DownloadUtil;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
@@ -117,7 +112,7 @@ public class SettingFragment extends Fragment {
                             Intent accountView = new Intent(CommonParas.getMainContext(), SettingAccountActivity.class);
                             startActivity(accountView);
                         }else if (position == 1){
-                            Intent accountView = new Intent(CommonParas.getMainContext(), SettingBackgroundTaskActivity.class);
+                            Intent accountView = new Intent(CommonParas.getMainContext(), SettingOtherActivity.class);
                             startActivity(accountView);
                         }else if (position == 2){
                             Intent accountView = new Intent(CommonParas.getMainContext(), InboxActivity.class);

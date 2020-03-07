@@ -1,7 +1,8 @@
 package dev.luoei.app.tool.sms.forward.tools;
 
 import android.app.Activity;
-import android.support.annotation.DrawableRes;
+
+import androidx.annotation.DrawableRes;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,7 +21,8 @@ public class NotifyObject implements Serializable{
     public String param;
     public Long firstTime;
     public Class<? extends Activity> activityClass;
-    @DrawableRes public int icon;
+    @DrawableRes
+    public int icon;
     public List<Long> times = new ArrayList<>();
 
     public static byte[] toBytes(NotifyObject obj) throws  IOException{

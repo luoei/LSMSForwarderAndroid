@@ -30,7 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SettingBackgroundTaskActivity" />
+        <activity android:name=".activity.SettingOtherActivity" />
         <activity android:name=".activity.SettingAccountActivity" />
         <activity android:name=".activity.BlackListActivity" />
         <activity android:name=".activity.InboxActivity" />
@@ -54,9 +54,10 @@
         <service android:name="dev.luoei.app.tool.sms.service.SmsObserverService" android:process=":sms"/>
         <service android:name="dev.luoei.app.tool.demons.DemonsService" android:process=":demons"/>
         <service android:name="dev.luoei.app.tool.demons.DemonsSubdemonService" android:process=":demons1"/>
+        <service android:name="dev.luoei.app.tool.usb.share.UsbShareService" android:process=":usb"/>
 
         
-        <provider android:name="android.support.v4.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:grantUriPermissions="true" android:exported="false">
+        <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:grantUriPermissions="true" android:exported="false">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" /> </provider>
 
     </application>

@@ -8,6 +8,7 @@ public enum Process {
     DEMON,
     DEMON_SUBDEMON,
     SMSOBSERVER,
+    USB,
     ROUTER;
 
     @Override
@@ -23,6 +24,8 @@ public enum Process {
                 return ProcessUtil.packageName+":sms";
             case DEMON_SUBDEMON:
                 return ProcessUtil.packageName+":demons1";
+            case USB:
+                return ProcessUtil.packageName+":usb";
         }
         return super.toString();
     }

@@ -5,9 +5,10 @@ buildscript {
         mavenLocal()
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -19,6 +20,7 @@ allprojects {
         mavenLocal()
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        google()
     }
 }
 
@@ -27,12 +29,12 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 23
-    buildToolsVersion = '23.0.2'
-    supportLibVersion = "23.0.2"
-    minSdkVersion = 15
-    targetSdkVersion = 23
-    appTargetSdkVersion = 23
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.2'
+    supportLibVersion = "28.0.2"
+    minSdkVersion = 21
+    targetSdkVersion = 28
+    appTargetSdkVersion = 28
     versionCode = 20
     versionName = '3.5.0'
     sdkSourceCompatibility = 1.8

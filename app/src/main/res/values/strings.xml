@@ -20,4 +20,6 @@
     <string name="title_sms">sms</string>
     <string name="title_db">db</string>
 
+    <string name="setting_usb_share">USB共享开启</string>
+
 </resources>

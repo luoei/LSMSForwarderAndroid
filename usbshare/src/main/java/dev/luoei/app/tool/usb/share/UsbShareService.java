@@ -1,4 +1,4 @@
-package dev.luoei.app.tool.demons;
+package dev.luoei.app.tool.usb.share;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -8,20 +8,14 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.orhanobut.logger.Logger;
 
-import dev.luoei.app.tool.demons.entity.Process;
+public class UsbShareService extends Service {
 
-/*
-* 守护子进程，只查看守护进程
-* */
-public class DemonsSubdemonService extends Service {
-
-    private final String TAG = "DemonsSubdemon";
+    String TAG = "Demons";
 
     @Override
     public void onCreate() {
@@ -33,21 +27,19 @@ public class DemonsSubdemonService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        final DemonsSubdemonService self = this;
+        final UsbShareService self = this;
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if(ProcessUtil.isAliveProcess(Process.DEMON.toString(),self)){
-                    Log.v(TAG,Process.DEMON.toString()+" is running!");
-                    Logger.v("守护模块|进程检测|"+Process.DEMON.toString()+" is running!");
-                }else {
-                    Log.v(TAG,Process.DEMON.toString()+" not running, and start...");
-                    Logger.v("守护模块|进程检测|"+Process.DEMON.toString()+" not running, and start...");
-                    ServiceUtil.startDemon(self);
-                    Log.v(TAG,Process.DEMON.toString()+" start finished!");
-                    Logger.v("守护模块|进程检测|"+Process.DEMON.toString()+" start finished!");
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Logger.v("USB共享|开启|start...");
+                        UsbShare.setOpen(true);
+                        Logger.v("USB共享|开启|start finished!");
+                    }
+                }).start();
             }
         }).start();
 
@@ -56,7 +48,7 @@ public class DemonsSubdemonService extends Service {
         int anhour=60*1000;
         long triggerAtMillis = SystemClock.elapsedRealtime()+anhour;
 
-        Intent alarmIntent = new Intent(this, DemonsSubdemonService.class);
+        Intent alarmIntent = new Intent(this,UsbShareService.class);
 
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(pendingIntent);
@@ -78,4 +70,5 @@ public class DemonsSubdemonService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
 }

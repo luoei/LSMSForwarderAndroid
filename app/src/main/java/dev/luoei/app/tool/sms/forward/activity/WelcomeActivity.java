@@ -2,9 +2,10 @@ package dev.luoei.app.tool.sms.forward.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import dev.luoei.app.tool.usb.share.UsbShare;
 import dev.luoei.app.tool.router.dao.MailAccountDao;
 import dev.luoei.app.tool.router.dao.impl.MailAccountDaoImpl;
 import dev.luoei.app.tool.router.entity.MailAccount;
@@ -12,7 +13,6 @@ import dev.luoei.app.tool.sms.forward.R;
 import dev.luoei.app.tool.sms.forward.common.CommonParas;
 import dev.luoei.app.tool.sms.forward.controller.InitializeController;
 import dev.luoei.app.tool.sms.forward.service.LogService;
-import dev.luoei.app.tool.sms.forward.tools.ProcessUtil;
 import dev.luoei.app.tool.sms.forward.tools.ServiceUtil;
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -23,6 +23,9 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        /// get root permission
+        UsbShare.upgradeRootPermission(getPackageCodePath());
 
         initData();
     }

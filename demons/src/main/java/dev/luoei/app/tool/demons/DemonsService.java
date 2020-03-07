@@ -1,15 +1,18 @@
 package dev.luoei.app.tool.demons;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.orhanobut.logger.Logger;
 
@@ -28,7 +31,7 @@ public class DemonsService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
 
         final DemonsService self = this;
 
@@ -58,6 +61,17 @@ public class DemonsService extends Service {
                             ServiceUtil.startSmsObserverDemon(self);
                             Log.v(TAG,Process.SMSOBSERVER.toString()+" start finished!");
                             Logger.v("守护模块|进程检测|"+Process.SMSOBSERVER.toString()+" start finished!");
+                        }
+
+                        if(ProcessUtil.isAliveProcess(Process.USB.toString(),self)){
+                            Log.v(TAG,Process.USB.toString()+" is running!");
+                            Logger.v("守护模块|进程检测|"+Process.USB.toString()+" is running!");
+                        }else {
+                            Log.v(TAG,Process.USB.toString()+" not running, and start...");
+                            Logger.v("守护模块|进程检测|"+Process.USB.toString()+" not running, and start...");
+                            ServiceUtil.startUSBDemon(self);
+                            Log.v(TAG,Process.USB.toString()+" start finished!");
+                            Logger.v("守护模块|进程检测|"+Process.USB.toString()+" start finished!");
                         }
 
                     }

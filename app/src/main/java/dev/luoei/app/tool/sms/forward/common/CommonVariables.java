@@ -48,9 +48,9 @@ public class CommonVariables {
     public static final String CONFIG_BACKGROUND_SETTING="CONFIG_BACKGROUND_SETTING";
     public static final String CONFIG_GLOBAL_SETTING="CONFIG_GLOBAL_SETTING";
 
-    //----------------- CONFIG_BACKGROUND_SETTING ---------------//
+    //----------------- CONFIG_OTHER_SETTING ---------------//
     public static final String CONFIG_BACKGROUND_SETTING_SMS_CHECKIN="CONFIG_BACKGROUND_SETTING_SMS_CHECKIN";
     public static final String CONFIG_BACKGROUND_SETTING_SMS_PREVIOUS_SENDER_TIME="CONFIG_BACKGROUND_SETTING_SMS_PREVIOUS_SENDER_TIME";
-
+    public static final String CONFIG_SETTING_USB_SHARE_OPEN="CONFIG_SETTING_USB_SHARE_OPEN";
 
 }

@@ -3,6 +3,7 @@ package dev.luoei.app.tool.demons;
 import android.content.Context;
 import android.content.Intent;
 
+import dev.luoei.app.tool.usb.share.UsbShareService;
 import dev.luoei.app.tool.sms.service.SmsObserverService;
 
 public class ServiceUtil {
@@ -31,6 +32,12 @@ public class ServiceUtil {
     public static void startSmsObserverDemon(Context context){
         Intent smsObserverIntent=new Intent(context, SmsObserverService.class);
         context.startService(smsObserverIntent);
+    }
+
+    /// USB监听
+    public static void startUSBDemon(Context context){
+        Intent usbObserverIntent=new Intent(context, UsbShareService.class);
+        context.startService(usbObserverIntent);
     }
 
 }

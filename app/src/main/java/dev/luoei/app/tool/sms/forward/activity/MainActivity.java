@@ -5,16 +5,15 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.widget.RadioGroup;
 
@@ -28,10 +27,7 @@ import dev.luoei.app.tool.sms.forward.controller.TabbarController;
 import dev.luoei.app.tool.sms.forward.tools.BasicTools;
 import dev.luoei.app.tool.sms.forward.tools.ProcessUtil;
 import dev.luoei.app.tool.sms.forward.tools.ScheduleUtil;
-import dev.luoei.app.tool.sms.service.SmsObserverService;
-import dev.luoei.app.tool.sms.service.SmsObserverService2;
 import dev.luoei.app.tool.sms.tool.SMSUtil;
-import dev.luoei.app.tool.sms.tool.SmsContentObserver;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -157,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
                 transaction.commit();
             }
         });
+
+
     }
 
 }
